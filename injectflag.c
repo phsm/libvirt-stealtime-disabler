@@ -18,7 +18,7 @@ void __attribute__((constructor)) on_load() {
 
 int execve(const char *path, char *const argv[], char *const envp[]) {
     int flag_val_position = -1;
-    char *flag_val;
+    char *flag_val = NULL;
     char **newargv;
     int i; // this also counts args for malloc
 
@@ -64,5 +64,6 @@ int execve(const char *path, char *const argv[], char *const envp[]) {
     // reuse i for the return code
     i = orig_execve(path, newargv, envp);
     free(newargv);
+    if (flag_val) free(flag_val);
     return i;
 }
